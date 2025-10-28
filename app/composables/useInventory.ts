@@ -8,7 +8,12 @@ export function useInventory() {
     lastUpdated: "2025-10-28T12:30:47+01:00",
   });
 
+  function updateQuantity(newQuantity: number) {
+    item.value.quantity = newQuantity;
+  }
+
   return {
     item,
+    updateQuantity,
   };
 }

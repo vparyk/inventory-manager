@@ -1,9 +1,9 @@
 <template>
   <UContainer>
-    <InventoryItemCard :item="item" />
+    <InventoryItemCard :item="item" @changeQuantity="updateQuantity" />
   </UContainer>
 </template>
 
 <script setup lang="ts">
-const { item } = useInventory();
+const { item, updateQuantity } = useInventory();
 </script>
