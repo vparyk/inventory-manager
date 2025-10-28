@@ -1,5 +1,5 @@
 <template>
-  <div>Todo: Implement tha home page</div>
+  <UContainer>Todo: Implement tha home page</UContainer>
 </template>
 
 <script setup></script>
