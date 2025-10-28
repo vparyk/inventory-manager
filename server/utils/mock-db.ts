@@ -22,3 +22,19 @@ const items: InventoryItem[] = [
 export function getAll(): InventoryItem[] {
   return items;
 }
+
+export function getItemById(id: string): InventoryItem | undefined {
+  return items.find((i) => i.id === id);
+}
+
+export function updateItem(
+  id: string,
+  newQuantity: number
+): { item: InventoryItem } {
+  const item = getItemById(id);
+  if (!item) throw createError({ statusCode: 404, statusMessage: "Not Found" });
+
+  item.quantity = Math.max(0, newQuantity);
+  item.lastUpdated = new Date().toISOString();
+  return { item };
+}

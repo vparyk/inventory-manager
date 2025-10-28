@@ -11,7 +11,7 @@
         v-for="(item, itemIndex) in items"
         :item="item"
         :key="item.id"
-        @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex)"
+        @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id)"
       />
     </div>
   </UContainer>
