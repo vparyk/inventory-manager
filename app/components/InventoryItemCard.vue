@@ -11,14 +11,8 @@
 
 <script setup lang="ts">
 import { timeAgo } from "~/assets/css/utils/time-ago";
+import { useInventory } from "~/composables/useInventory";
 
-//TODO replace mock with props:
-const item: InventoryItem = {
-  id: "ID-1",
-  name: "Mock item",
-  image_url: "https://dummyimage.com/120x120/1a3138/fff",
-  quantity: 10,
-  lastUpdated: "2025-10-28T12:30:47+01:00",
-};
+const { item }: { item: InventoryItem } = useInventory();
 const lastUpdated = computed(() => timeAgo(item.lastUpdated));
 </script>
