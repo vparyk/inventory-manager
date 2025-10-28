@@ -1,19 +1,25 @@
 export function useInventory() {
-  //TODO replace mock with props:
-  const item: Ref<InventoryItem> = ref({
-    id: "ID-1",
-    name: "Mock item",
-    image_url: "https://dummyimage.com/120x120/1a3138/fff",
-    quantity: 10,
-    lastUpdated: "2025-10-28T12:30:47+01:00",
+  const {
+    data: items,
+    pending: loading,
+    error,
+    refresh,
+  } = useFetch<InventoryItem[]>("/api/items", {
+    lazy: false,
   });
 
-  function updateQuantity(newQuantity: number) {
-    item.value.quantity = newQuantity;
+  function updateQuantity(newQuantity: number, itemIndex: number) {
+    if (!items.value || !items.value[itemIndex]) {
+      return;
+    }
+
+    items.value[itemIndex].quantity = newQuantity;
   }
 
   return {
-    item,
+    items,
+    loading,
+    error,
     updateQuantity,
   };
 }
