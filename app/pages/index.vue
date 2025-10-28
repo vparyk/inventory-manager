@@ -1,9 +1,9 @@
 <template>
   <UContainer>
-    <InventoryItemCard />
+    <InventoryItemCard :item="item" />
   </UContainer>
 </template>
 
-<script setup>
-import InventoryItemCard from "~/components/InventoryItemCard.vue";
+<script setup lang="ts">
+const { item } = useInventory();
 </script>
