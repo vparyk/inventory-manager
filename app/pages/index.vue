@@ -1,5 +1,9 @@
 <template>
-  <UContainer>Todo: Implement tha home page</UContainer>
+  <UContainer>
+    <InventoryItemCard />
+  </UContainer>
 </template>
 
-<script setup></script>
+<script setup>
+import InventoryItemCard from "~/components/InventoryItemCard.vue";
+</script>
