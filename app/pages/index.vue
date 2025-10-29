@@ -6,8 +6,7 @@
     <div v-else-if="error">
       <p>Server error</p>
     </div>
-    <div v-else class="flex flex-col gap-2">
-      <h1 class="text-xl font-semibold">Készletkezelő Mini</h1>
+    <div v-else class="flex flex-col gap-3">
       <p class="text-sm">
         Utoljára szinkronizálva: {{ lastTimeSyncedFormatted }}
       </p>
