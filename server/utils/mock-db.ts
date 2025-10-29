@@ -1,30 +1,34 @@
 import { InventoryItem } from "~~/shared/types/inventory-item";
 
-const itemMock: InventoryItem = {
-  id: "ID-1",
-  name: "Mock item",
-  image_url: "https://dummyimage.com/120x120/1a3138/fff",
-  quantity: 10,
-  lastUpdated: "2025-10-28T12:30:47+01:00",
-};
+const itemsMock: InventoryItem[] = Array.from({ length: 12 }, (_, i) => {
+  const quantity = Math.floor(Math.random() * 101);
 
-const items: InventoryItem[] = [
-  itemMock,
-  itemMock,
-  itemMock,
-  itemMock,
-  itemMock,
-  itemMock,
-  itemMock,
-  itemMock,
-];
+  const minutesAgo = Math.floor(Math.random() * 91);
+  const lastUpdated = new Date(
+    Date.now() - minutesAgo * 60 * 1000
+  ).toISOString();
+
+  const color = Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, "0");
+
+  return {
+    id: `ID-${i + 1}`,
+    name: `Mock item ${i + 1}`,
+    image_url: `https://dummyimage.com/120x120/${color}/ffffff&text=Item+${
+      i + 1
+    }`,
+    quantity,
+    lastUpdated,
+  };
+});
 
 export function getAll(): InventoryItem[] {
-  return items;
+  return itemsMock;
 }
 
 export function getItemById(id: string): InventoryItem | undefined {
-  return items.find((i) => i.id === id);
+  return itemsMock.find((i) => i.id === id);
 }
 
 export function updateItem(
