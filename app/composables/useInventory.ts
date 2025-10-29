@@ -1,5 +1,5 @@
 export function useInventory() {
-  const lastTimeSynced = useState<string>("lastTimeSynced", () => "");
+  const lastTimeSynced = useState<string>(() => "");
   const {
     data: items,
     pending: loading,
