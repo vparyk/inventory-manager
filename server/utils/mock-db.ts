@@ -1,26 +1,15 @@
 import { InventoryItem } from "~~/shared/types/inventory-item";
+import {
+  generateMockItem,
+  mockServerChange,
+} from "~~/server/utils/mock-helper";
 
-const itemsMock: InventoryItem[] = Array.from({ length: 12 }, (_, i) => {
-  const quantity = Math.floor(Math.random() * 101);
+const itemsMock: InventoryItem[] = Array.from({ length: 12 }, (_, index) => {
+  return generateMockItem(index);
+});
 
-  const minutesAgo = Math.floor(Math.random() * 91);
-  const lastUpdated = new Date(
-    Date.now() - minutesAgo * 60 * 1000
-  ).toISOString();
-
-  const color = Math.floor(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, "0");
-
-  return {
-    id: `ID-${i + 1}`,
-    name: `Mock item ${i + 1}`,
-    image_url: `https://dummyimage.com/120x120/${color}/ffffff&text=Item+${
-      i + 1
-    }`,
-    quantity,
-    lastUpdated,
-  };
+mockServerChange(itemsMock.length, (index, newItem) => {
+  itemsMock[index] = newItem;
 });
 
 export function getAll(): InventoryItem[] {
