@@ -18,5 +18,8 @@
 </template>
 
 <script setup lang="ts">
-const { items, loading, error, updateQuantity } = useInventory();
+const { items, loading, error, updateQuantity, keepSynced } = useInventory();
+onMounted(() => {
+  keepSynced();
+});
 </script>

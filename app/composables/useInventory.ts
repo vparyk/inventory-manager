@@ -26,10 +26,17 @@ export function useInventory() {
     items.value[itemIndex].quantity = newQuantity;
   }
 
+  // TODO: change polling to websocket
+  const { startPolling } = usePolling();
+  function keepSynced() {
+    startPolling(() => refresh());
+  }
+
   return {
     items,
     loading,
     error,
     updateQuantity,
+    keepSynced,
   };
 }
