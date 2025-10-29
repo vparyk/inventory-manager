@@ -6,7 +6,11 @@
     <div v-else-if="error">
       <p>Server error</p>
     </div>
-    <div v-else>
+    <div v-else class="flex flex-col gap-2">
+      <h1 class="text-xl font-semibold">Készletkezelő Mini</h1>
+      <p class="text-sm">
+        Utoljára szinkronizálva: {{ lastTimeSyncedFormatted }}
+      </p>
       <InventoryItemCard
         v-for="(item, itemIndex) in items"
         :item="item"
@@ -18,11 +22,20 @@
 </template>
 
 <script setup lang="ts">
-const { items, loading, error, updateQuantity, keepSynced } = useInventory();
+import { timeAgo } from "~/assets/css/utils/time-ago";
+
+const { items, loading, error, lastTimeSynced, updateQuantity, keepSynced } =
+  useInventory();
+
 onMounted(() => {
   keepSynced();
 });
+
 const showLoadingOnNavigation = computed(
   () => loading && !(items.value && items.value.length > 0)
+);
+
+const lastTimeSyncedFormatted = computed(() =>
+  lastTimeSynced.value ? `${timeAgo(lastTimeSynced.value)}` : ""
 );
 </script>

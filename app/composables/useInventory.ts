@@ -1,10 +1,15 @@
 export function useInventory() {
+  const lastTimeSynced = useState<string>("lastTimeSynced", () => "");
   const {
     data: items,
     pending: loading,
     error,
     refresh,
-  } = useFetch<InventoryItem[]>("/api/items", {
+  } = useFetch("/api/items", {
+    transform: (data: ItemsGetApiResponse): InventoryItem[] => {
+      lastTimeSynced.value = data.serverTime;
+      return data.items;
+    },
     deep: true,
     lazy: true,
   });
@@ -37,6 +42,7 @@ export function useInventory() {
     items,
     loading,
     error,
+    lastTimeSynced,
     updateQuantity,
     keepSynced,
   };

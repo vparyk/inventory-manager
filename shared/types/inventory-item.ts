@@ -5,3 +5,8 @@ export interface InventoryItem {
   quantity: number;
   lastUpdated: string;
 }
+
+export interface ItemsGetApiResponse {
+  items: InventoryItem[];
+  serverTime: string;
+}
