@@ -1,17 +1,11 @@
 export function useInventory() {
   const {
-    data,
+    data: items,
     pending: loading,
     error,
     refresh,
   } = useFetch<InventoryItem[]>("/api/items", {
-    lazy: false,
-  });
-
-  const items = ref<InventoryItem[]>([]);
-
-  watchEffect(() => {
-    if (data.value) items.value = data.value;
+    deep: true,
   });
 
   async function updateQuantity(
