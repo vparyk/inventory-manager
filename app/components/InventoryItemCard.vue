@@ -1,14 +1,11 @@
 <template>
   <UCard>
-    <div>
+    <div class="flex flex-col items-center gap-1">
+      <h2 class="text-center font-semibold mb-2">{{ item.name }}</h2>
       <NuxtImg :src="item.image_url" :alt="item.name" class="size-30" />
-      <h2>{{ item.name }}</h2>
       <p>Mennyiség: {{ item.quantity }}</p>
       <p>Frissítve: {{ lastUpdated }}</p>
-      <UIQuantity
-        :quantity="item.quantity"
-        @changeQuantity="updateQuantity"
-      />
+      <UIQuantity :quantity="item.quantity" @changeQuantity="updateQuantity" />
     </div>
   </UCard>
 </template>

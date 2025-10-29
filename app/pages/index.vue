@@ -11,12 +11,14 @@
       <p class="text-sm">
         Utoljára szinkronizálva: {{ lastTimeSyncedFormatted }}
       </p>
-      <InventoryItemCard
-        v-for="(item, itemIndex) in items"
-        :item="item"
-        :key="item.id"
-        @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id)"
-      />
+      <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+        <InventoryItemCard
+          v-for="(item, itemIndex) in items"
+          :item="item"
+          :key="item.id"
+          @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id)"
+        />
+      </div>
     </div>
   </UContainer>
 </template>
