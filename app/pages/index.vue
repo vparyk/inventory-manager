@@ -1,6 +1,6 @@
 <template>
   <UContainer>
-    <div v-if="loading">
+    <div v-if="showLoadingOnNavigation">
       <p>Loading inventory...</p>
     </div>
     <div v-else-if="error">
@@ -22,4 +22,7 @@ const { items, loading, error, updateQuantity, keepSynced } = useInventory();
 onMounted(() => {
   keepSynced();
 });
+const showLoadingOnNavigation = computed(
+  () => loading && !(items.value && items.value.length > 0)
+);
 </script>

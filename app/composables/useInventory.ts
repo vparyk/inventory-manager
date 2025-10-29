@@ -6,6 +6,7 @@ export function useInventory() {
     refresh,
   } = useFetch<InventoryItem[]>("/api/items", {
     deep: true,
+    lazy: true,
   });
 
   async function updateQuantity(
