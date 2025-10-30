@@ -10,3 +10,10 @@ export interface ItemsGetApiResponse {
   items: InventoryItem[];
   serverTime: string;
 }
+
+export interface UpdateQuantityParams {
+  itemId: string;
+  itemIndex: number;
+  newQuantity: number;
+  lastUpdated: string;
+}

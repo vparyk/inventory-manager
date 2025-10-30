@@ -16,16 +16,20 @@
       <p class="text-error">Server error: {{ error }}</p>
     </div>
     <div v-else class="flex flex-col gap-3">
-      <p class="text-sm">
-        Utoljára szinkronizálva: {{ lastTimeSyncedFormatted }}
-      </p>
+      <div class="flex justify-between text-sm">
+        <p>Utoljára szinkronizálva: {{ lastTimeSyncedFormatted }}</p>
+        <p v-if="queue.length > 0" class="text-right">
+          Sorban álló mentések: {{ queue.length }}
+        </p>
+      </div>
+
       <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
         <InventoryItemCard
           v-for="(item, itemIndex) in filteredItems"
           :key="item.id"
           :item="item"
           :isConflicted="item.id === conflictId"
-          @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id, item.lastUpdated)"
+          @changeQuantity="(newQuantity:number) => updateHandler({newQuantity, itemIndex, itemId: item.id, lastUpdated:item.lastUpdated})"
         />
       </div>
     </div>
@@ -50,6 +54,16 @@ const { filter, filteredItems, filterOptions } = useFilter(items, conflictId);
 onMounted(() => {
   keepSynced();
 });
+
+const { queue, isOnline, addToQueue } = useSaveQueue<UpdateQuantityParams>();
+
+function updateHandler(updateQuantityParams: UpdateQuantityParams) {
+  if (!isOnline.value) {
+    addToQueue(updateQuantityParams, updateQuantity);
+    return;
+  }
+  updateQuantity(updateQuantityParams);
+}
 
 const showLoadingOnNavigation = computed(
   () => loading && !(items.value && items.value.length > 0)

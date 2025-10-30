@@ -15,12 +15,12 @@ export function useInventory() {
   });
 
   const conflictId = ref<string>("");
-  async function updateQuantity(
-    newQuantity: number,
-    itemIndex: number,
-    itemId: string,
-    lastUpdated?: string
-  ) {
+  async function updateQuantity({
+    newQuantity,
+    itemIndex,
+    itemId,
+    lastUpdated,
+  }: UpdateQuantityParams) {
     if (!items.value || !items.value[itemIndex]) {
       return;
     }
@@ -35,15 +35,7 @@ export function useInventory() {
           },
         }
       );
-      if (
-        !newItem?.id ||
-        !newItem?.name ||
-        !newItem?.image_url ||
-        !newItem?.quantity ||
-        !newItem?.lastUpdated
-      ) {
-        throw new Error("No item returned from server");
-      }
+      validateInventoryItem(newItem);
       items.value[itemIndex] = newItem;
     } catch (errorResponse: any) {
       if (errorResponse?.statusCode === 409) {
@@ -55,6 +47,20 @@ export function useInventory() {
       }
     }
   }
+
+  function validateInventoryItem(item: InventoryItem) {
+    if (
+      !item ||
+      typeof item.id !== "string" ||
+      typeof item.name !== "string" ||
+      typeof item.image_url !== "string" ||
+      typeof item.quantity !== "number" ||
+      typeof item.lastUpdated !== "string"
+    ) {
+      throw new Error("Invalid item returned from server");
+    }
+  }
+
   // TODO: change polling to websocket
   const { startPolling } = usePolling();
   function keepSynced() {
