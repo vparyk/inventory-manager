@@ -1,10 +1,7 @@
 export const FILTER_ALL = "all";
 export const FILTER_CONFLICTED = "conflicted";
 
-export function useFilter(
-  items: Ref<InventoryItem[] | undefined>,
-  conflictId: Ref<string>
-) {
+export function useFilter(items: Ref<InventoryItem[] | undefined>) {
   const filter = ref<string>(FILTER_ALL);
 
   const filterOptions = [
@@ -17,7 +14,7 @@ export function useFilter(
 
     switch (filter.value) {
       case FILTER_CONFLICTED:
-        return items.value.filter((item) => conflictId.value.includes(item.id));
+        return items.value.filter((item) => item.status === "conflicted");
       default:
         return items.value;
     }

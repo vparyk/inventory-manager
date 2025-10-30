@@ -5,6 +5,7 @@
       size="xs"
       variant="soft"
       @click="decrement"
+      :disabled="disabled"
     />
     <UInput
       :model-value="quantity"
@@ -13,14 +14,22 @@
       class="w-14"
       input-class="text-center"
       min="0"
+      :disabled="disabled"
     />
-    <UButton icon="i-lucide-plus" size="xs" variant="soft" @click="increment" />
+    <UButton
+      icon="i-lucide-plus"
+      size="xs"
+      variant="soft"
+      @click="increment"
+      :disabled="disabled"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-const { quantity } = defineProps<{
+const { quantity, disabled } = defineProps<{
   quantity: number;
+  disabled?: boolean;
 }>();
 
 const emit = defineEmits<{

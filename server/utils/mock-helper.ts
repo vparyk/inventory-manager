@@ -1,9 +1,10 @@
+import { InventoryItemBase } from "~~/shared/types/inventory-item";
 import { randomInt } from "~~/shared/utils/randomize";
 
 const MAX_QUANTITY = 100;
 const MAX_MINUTES_AGO = 90;
 
-export function generateMockItem(index: number): InventoryItem {
+export function generateMockItem(index: number): InventoryItemBase {
   const quantity = randomInt(MAX_QUANTITY);
 
   const minutesAgo = randomInt(MAX_MINUTES_AGO);
@@ -26,12 +27,12 @@ export function generateMockItem(index: number): InventoryItem {
 
 export function mockServerChange(
   itemsLength: number,
-  updateItem: (index: number, newItem: InventoryItem) => void
+  updateItem: (index: number, newItem: InventoryItemBase) => void
 ) {
   setInterval(() => {
     const randomIndex = randomInt(itemsLength + 1);
     const now = new Date().toISOString();
-    const newItem: InventoryItem = generateMockItem(randomIndex);
+    const newItem: InventoryItemBase = generateMockItem(randomIndex);
 
     updateItem(randomIndex, { ...newItem, lastUpdated: now });
   }, 5000);

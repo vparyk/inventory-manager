@@ -16,7 +16,11 @@
       <img :src="item.image_url" :alt="item.name" class="size-30" />
       <p>Mennyiség: {{ item.quantity }}</p>
       <p>Frissítve: {{ lastUpdated }}</p>
-      <UIQuantity :quantity="item.quantity" @changeQuantity="updateQuantity" />
+      <UIQuantity
+        :quantity="item.quantity"
+        :disabled="item.isLocked"
+        @changeQuantity="updateQuantity"
+      />
     </div>
   </UCard>
 </template>
@@ -24,9 +28,8 @@
 <script setup lang="ts">
 import { timeAgo } from "~/assets/css/utils/time-ago";
 
-const { item, isConflicted } = defineProps<{
+const { item } = defineProps<{
   item: InventoryItem;
-  isConflicted: boolean;
 }>();
 
 const lastUpdated = computed(() => timeAgo(item.lastUpdated));
@@ -38,4 +41,6 @@ const emit = defineEmits<{
 function updateQuantity(value: number) {
   emit("change-quantity", value);
 }
+
+const isConflicted = computed(() => item.status === "conflicted");
 </script>

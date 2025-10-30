@@ -1,4 +1,4 @@
-export interface InventoryItem {
+export interface InventoryItemBase {
   id: string;
   name: string;
   image_url: string;
@@ -6,9 +6,20 @@ export interface InventoryItem {
   lastUpdated: string;
 }
 
+export interface InventoryItem extends InventoryItemBase {
+  status: ItemStatus;
+  isLocked: boolean;
+}
+
+export type ItemStatus = "idle" | "saving" | "saved" | "conflicted" | "queued";
+
 export interface ItemsGetApiResponse {
-  items: InventoryItem[];
+  items: InventoryItemBase[];
   serverTime: string;
+}
+
+export interface ItemsPatchApiResponse {
+  item: InventoryItemBase;
 }
 
 export interface UpdateQuantityParams {

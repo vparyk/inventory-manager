@@ -28,7 +28,6 @@
           v-for="(item, itemIndex) in filteredItems"
           :key="item.id"
           :item="item"
-          :isConflicted="item.id === conflictId"
           @changeQuantity="(newQuantity:number) => updateHandler({newQuantity, itemIndex, itemId: item.id, lastUpdated:item.lastUpdated})"
         />
       </div>
@@ -39,17 +38,10 @@
 <script setup lang="ts">
 import { timeAgo } from "~/assets/css/utils/time-ago";
 
-const {
-  items,
-  loading,
-  error,
-  lastTimeSynced,
-  conflictId,
-  updateQuantity,
-  keepSynced,
-} = useInventory();
+const { items, loading, error, lastTimeSynced, updateQuantity, keepSynced } =
+  useInventory();
 
-const { filter, filteredItems, filterOptions } = useFilter(items, conflictId);
+const { filter, filteredItems, filterOptions } = useFilter(items);
 
 onMounted(() => {
   keepSynced();

@@ -8,13 +8,14 @@ export function useInventory() {
   } = useFetch("/api/items", {
     transform: (data: ItemsGetApiResponse): InventoryItem[] => {
       lastTimeSynced.value = data.serverTime;
-      return data.items;
+      return data.items.map((item) => parseInventoryItem(item));
     },
     deep: true,
     lazy: true,
   });
 
-  const conflictId = ref<string>("");
+  const { handleConflict } = useConflict();
+
   async function updateQuantity({
     newQuantity,
     itemIndex,
@@ -25,7 +26,7 @@ export function useInventory() {
       return;
     }
     try {
-      const { item: newItem }: { item: InventoryItem } = await $fetch(
+      const { item: newItem }: { item: InventoryItemBase } = await $fetch(
         `/api/items/${itemId}`,
         {
           method: "PATCH",
@@ -35,20 +36,29 @@ export function useInventory() {
           },
         }
       );
-      validateInventoryItem(newItem);
-      items.value[itemIndex] = newItem;
+      items.value[itemIndex] = parseInventoryItem(newItem, "saved");
     } catch (errorResponse: any) {
       if (errorResponse?.statusCode === 409) {
-        const serverItem: InventoryItem = errorResponse.data?.data?.serverItem;
-        conflictId.value = serverItem.id;
-        items.value[itemIndex] = serverItem;
+        const serverItem: InventoryItemBase =
+          errorResponse.data?.data?.serverItem;
+        items.value[itemIndex] = parseInventoryItem(
+          serverItem,
+          "conflicted",
+          true
+        );
+        handleConflict(serverItem.name, (isLocked) => {
+          if (!items.value || !items.value[itemIndex]) {
+            return;
+          }
+          items.value[itemIndex].isLocked = isLocked;
+        });
       } else {
         error.value = errorResponse;
       }
     }
   }
 
-  function validateInventoryItem(item: InventoryItem) {
+  function validateInventoryItem(item: InventoryItemBase) {
     if (
       !item ||
       typeof item.id !== "string" ||
@@ -59,6 +69,15 @@ export function useInventory() {
     ) {
       throw new Error("Invalid item returned from server");
     }
+  }
+
+  function parseInventoryItem(
+    item: InventoryItemBase,
+    status = "idle" as ItemStatus,
+    isLocked = false
+  ): InventoryItem {
+    validateInventoryItem(item);
+    return { ...item, status, isLocked: isLocked };
   }
 
   // TODO: change polling to websocket
@@ -72,7 +91,6 @@ export function useInventory() {
     loading,
     error,
     lastTimeSynced,
-    conflictId,
     updateQuantity,
     keepSynced,
   };
