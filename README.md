@@ -1,6 +1,52 @@
 # Nuxt Minimal Starter
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## State Management
+
+The project’s state management is handled inside a dedicated composable, separated from the components.
+My goal was to keep the logic reusable, easy to test, and independent from the component layer.
+I didn’t use Nuxt’s useState as a global store since it didn’t feel necessary for a project of this size.
+
+While I did consider using Pinia or a Redux-style store, that approach felt like overengineering for this small project, especially since the task description suggested keeping things simple.
+At this scale, the composable-based approach is much simpler and easier to follow, while Vue 3’s reactivity system still provides great performance and clean, readable code.
+
+That said, only a bit more functionality would make Pinia a good fit.
+From my previous experience, Pinia requires much less boilerplate compared to Vuex,
+and it helps avoid prop drilling while keeping data flow clean and predictable between components.
+
+## Data Synchronization and Polling
+
+The current data synchronization is implemented using a polling-based mechanism.
+While a WebSocket-based solution would be more efficient, keeping data in real-time sync and reducing the chance of conflicts,
+I chose polling because:
+
+- It’s simpler to implement,
+
+- Provides more predictable testing scenarios (e.g., for conflict or last-sync features),
+
+- And the main focus of the project was conflict handling and state visualization.
+
+- In this context, polling was a deliberate trade-off that served the project goals well.
+
+## Conflict Handling
+
+The system currently uses a "server wins" strategy for handling conflicts.
+Given the available time and scope, this was the most stable and maintainable approach.
+
+The UI provides clear visual feedback and a tooltip when a conflict occurs,
+along with a temporary lock so users can notice and understand what happened.
+
+A natural next step for future development would be an interactive conflict resolution interface,
+allowing users to choose between “client wins” or "server wins" options.
+
+## Possible Future Improvements
+
+- Extended filtering: add an option to filter by “Saved” status.
+
+- WebSocket integration: enable real-time updates and reduce conflicts.
+
+- Conflict resolution UI: let users manually resolve conflicts.
+
+- State persistence: store local states (queued, saved) in browser cache or IndexedDB.
 
 ## Setup
 
