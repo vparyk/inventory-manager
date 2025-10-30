@@ -1,5 +1,14 @@
 <template>
   <UContainer>
+    <div class="flex justify-end mb-4">
+      <USelect
+        v-model="filter"
+        :items="filterOptions"
+        size="sm"
+        placeholder="Szűrés státusz szerint"
+        class="w-full sm:w-52"
+      />
+    </div>
     <div v-if="showLoadingOnNavigation">
       <p>Loading inventory...</p>
     </div>
@@ -12,7 +21,7 @@
       </p>
       <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
         <InventoryItemCard
-          v-for="(item, itemIndex) in items"
+          v-for="(item, itemIndex) in filteredItems"
           :key="item.id"
           :item="item"
           :isConflicted="item.id === conflictId"
@@ -35,6 +44,8 @@ const {
   updateQuantity,
   keepSynced,
 } = useInventory();
+
+const { filter, filteredItems, filterOptions } = useFilter(items, conflictId);
 
 onMounted(() => {
   keepSynced();

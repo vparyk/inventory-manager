@@ -10,7 +10,7 @@
       </div>
     </header>
 
-    <main class="my-4 flex-1">
+    <main class="my-5 flex-1">
       <slot />
     </main>
 
