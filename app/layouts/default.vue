@@ -8,6 +8,10 @@
         <span class="inline-flex size-8 items-center justify-center">📦</span>
         <h1 class="text-md font-semibold">Készletkezelő Mini</h1>
       </div>
+
+      <UIWarning v-if="!isOnline">
+        ⚠️ Offline mód: a módosításaid sorba állnak és később mentődnek!
+      </UIWarning>
     </header>
 
     <main class="my-5 flex-1">
@@ -21,3 +25,7 @@
     </footer>
   </div>
 </template>
+
+<script setup lang="ts">
+const { isOnline } = useOnlineStatus();
+</script>
