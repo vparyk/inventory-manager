@@ -13,7 +13,7 @@
         </UTooltip>
       </div>
       <h2 class="text-center font-semibold mb-2">{{ item.name }}</h2>
-      <NuxtImg :src="item.image_url" :alt="item.name" class="size-30" />
+      <img :src="item.image_url" :alt="item.name" class="size-30" />
       <p>Mennyiség: {{ item.quantity }}</p>
       <p>Frissítve: {{ lastUpdated }}</p>
       <UIQuantity :quantity="item.quantity" @changeQuantity="updateQuantity" />
