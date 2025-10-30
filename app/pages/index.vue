@@ -4,7 +4,7 @@
       <p>Loading inventory...</p>
     </div>
     <div v-else-if="error">
-      <p>Server error</p>
+      <p class="text-error">Server error: {{ error }}</p>
     </div>
     <div v-else class="flex flex-col gap-3">
       <p class="text-sm">
@@ -13,9 +13,10 @@
       <div class="grid gap-4 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
         <InventoryItemCard
           v-for="(item, itemIndex) in items"
-          :item="item"
           :key="item.id"
-          @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id)"
+          :item="item"
+          :isConflicted="item.id === conflictId"
+          @changeQuantity="(newQuanitity:number) => updateQuantity(newQuanitity, itemIndex, item.id, item.lastUpdated)"
         />
       </div>
     </div>
@@ -25,8 +26,15 @@
 <script setup lang="ts">
 import { timeAgo } from "~/assets/css/utils/time-ago";
 
-const { items, loading, error, lastTimeSynced, updateQuantity, keepSynced } =
-  useInventory();
+const {
+  items,
+  loading,
+  error,
+  lastTimeSynced,
+  conflictId,
+  updateQuantity,
+  keepSynced,
+} = useInventory();
 
 onMounted(() => {
   keepSynced();

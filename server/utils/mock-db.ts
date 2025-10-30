@@ -25,9 +25,11 @@ export function updateItem(
   newQuantity: number
 ): { item: InventoryItem } {
   const item = getItemById(id);
-  if (!item) throw createError({ statusCode: 404, statusMessage: "Not Found" });
+  if (!item) {
+    throw createError({ statusCode: 404, statusMessage: "Item not found" });
+  }
 
-  item.quantity = Math.max(0, newQuantity);
+  item.quantity = newQuantity;
   item.lastUpdated = new Date().toISOString();
   return { item };
 }

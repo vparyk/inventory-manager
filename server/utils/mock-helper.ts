@@ -29,7 +29,7 @@ export function mockServerChange(
   updateItem: (index: number, newItem: InventoryItem) => void
 ) {
   setInterval(() => {
-    const randomIndex = randomInt(itemsLength);
+    const randomIndex = randomInt(itemsLength + 1);
     const now = new Date().toISOString();
     const newItem: InventoryItem = generateMockItem(randomIndex);
 
