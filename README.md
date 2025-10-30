@@ -38,6 +38,16 @@ along with a temporary lock so users can notice and understand what happened.
 A natural next step for future development would be an interactive conflict resolution interface,
 allowing users to choose between “client wins” or "server wins" options.
 
+## Error handling
+
+I added strict validation between the backend and the frontend for all data being transferred.
+Any received errors are displayed clearly in the UI.
+
+When the user goes offline, a visible indicator is shown, and all actions made during offline mode are stored in a generic, reusable event queue.
+This queue automatically resends those actions once the connection is restored.
+
+Errors are also communicated to the user, not only through red borders and tooltip icons, but also via toast messages for extra visibility.
+
 ## Possible Future Improvements
 
 - Extended filtering: add an option to filter by “Saved” status.
@@ -47,6 +57,14 @@ allowing users to choose between “client wins” or "server wins" options.
 - Conflict resolution UI: let users manually resolve conflicts.
 
 - State persistence: store local states (queued, saved) in browser cache or IndexedDB.
+
+- Add retry logic for failed API calls (e.g. retry X times before giving up).
+
+- Strengthen input validation on the frontend to prevent edge case errors before sending requests.
+
+- When implementing a conflict resolution prompt, modify the current handling so the conflict state stays active until the user resolves it, even if new data arrives from the server.
+
+- If keeping the current “server wins” approach, it would be a good idea to cancel backend requests immediately when new data arrives from polling, since the conflict can already be detected safely on the frontend.
 
 ## Setup
 
